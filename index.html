@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+    <div class="container">
+
+        <h1>Voting App</h1>
+
+        <h2 id="instructor"></h2>
+
+        <label for="question" class="col-lg-2 control-label">New topic</label>
+        <input id="question" type="text">
+
+
+        <button id="button">Update Question</button>
+
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+
+    <script>
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            // set the provider you want from Web3.providers
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:9545"));
+        }
+
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+        var VotingContract = web3.eth.contract([
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "votes",
+      "outputs": [
+        {
+          "name": "question",
+          "type": "string"
+        },
+        {
+          "name": "countYes",
+          "type": "uint256"
+        },
+        {
+          "name": "countNo",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "voteToOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "voteId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "question",
+          "type": "string"
+        }
+      ],
+      "name": "VoteAdded",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_question",
+          "type": "string"
+        }
+      ],
+      "name": "createVote",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getNbVoteId",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_voteId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getVote",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        },
+        {
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_voteId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getVoteOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]);
+        var Voting = VotingContract.at('0x345ca3e014aaf5dca488057592ee47305d9b3e10');
+        //console.log(Voting);
+
+        Voting.getNbVoteId(function(error, result){
+            console.log(result);
+        });
+
+        $("#button").click(function() {
+            Voting.createVote($("#question").val()).estimateGas({gas: 5000000}, function(error, gasAmount){
+                if(gasAmount == 5000000)
+                    console.log('Method ran out of gas');
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/andreaspastor/Simple-SmartContract-App/issues"
   },
-  "homepage": "https://github.com/andreaspastor/Simple-SmartContract-App#readme"
+  "homepage": "https://github.com/andreaspastor/Simple-SmartContract-App#readme",
+  "dependencies": {
+    "web3": "github:ethereum/web3.js"
+  }
 }
