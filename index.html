@@ -9,257 +9,74 @@
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-    <div class="container">
+  <div class="container">
 
+      <div class="left-pannel">
         <h1>Voting App</h1>
 
-        <table id="Votes">
-          <tr>
-              <th>Question</th>
-              <th>Yes</th>
-              <th>No</th>
-          </tr>
-       </table>
 
-        <label for="question" class="col-lg-2 control-label">New topic</label>
+        <label for="question" class="col-lg-2 control-label">Question</label>
         <input id="question" type="text">
 
+        <label for="option1" class="col-lg-2 control-label">Choix 1</label>
+        <input id="option1" type="text">
 
-        <button id="button">Update Question</button>
+        <label for="option2" class="col-lg-2 control-label">Choix 2</label>
+        <input id="option2" type="text">
+
+        <label for="option3" class="col-lg-2 control-label">Choix 3</label>
+        <input id="option3" type="text">
+
+        <button id="create-vote">Créer le vote</button>
+
+        <p>Sinon, choisir l'adresse du contrat à récupérer</p>
+        <label for="contract-address" class="col-lg-2 control-label">
+          Adresse du contrat:
+        </label>
+        <input id="contract-address" type="text">
+
+        <button id="load-contract">Charger le contrat</button>
+
+        <p>Choisir le compte a utiliser</p>
+        <select>
+         <option value="0" selected="selected">Compte 0</option>
+         <option value="1">Compte 1</option>
+         <option value="2">Compte 2</option>
+         <option value="3">Compte 3</option>
+         <option value="4">Compte 4</option>
+         <option value="5">Compte 5</option>
+         <option value="6">Compte 6</option>
+         <option value="7">Compte 7</option>
+         <option value="8">Compte 8</option>
+         <option value="9">Compte 9</option>
+      </select>
+
+      </div>
+
+      <div class="right-pannel">
+        <div class="table-responsive">
+          <p id="table-title">Question</p>
+          <table id="vote-table" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Option</th>
+                <th>Voter</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+  </div>
 
 
-    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="./node_modules/web3/dist/web3.min.js"></script>
 
-    <script>
-
-		
-        if (typeof web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
-        } else {
-            // set the provider you want from Web3.providers
-            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:9545"));
-        }
-
-        web3.eth.defaultAccount = web3.eth.accounts[0];
-        var VotingContract = web3.eth.contract([
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_voteId",
-				"type": "uint256"
-			}
-		],
-		"name": "getVoteOwner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_question",
-				"type": "string"
-			}
-		],
-		"name": "createVote",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_voteId",
-				"type": "uint256"
-			}
-		],
-		"name": "getVote",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			},
-			{
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "votes",
-		"outputs": [
-			{
-				"name": "question",
-				"type": "string"
-			},
-			{
-				"name": "countYes",
-				"type": "uint256"
-			},
-			{
-				"name": "countNo",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_voteId",
-				"type": "uint256"
-			}
-		],
-		"name": "voteAgainst",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_voteId",
-				"type": "uint256"
-			}
-		],
-		"name": "voteFor",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getNbVoteId",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "voteToOwner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "voteId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "question",
-				"type": "string"
-			}
-		],
-		"name": "VoteAdded",
-		"type": "event"
-	}
-]);
-        var Voting = VotingContract.at('0x51815cebef59b88dafd1a5f24095eee1236ffcdd');
-        //console.log(Voting);
-
-		function voteFor(h) {
-			Voting.voteFor(h);
-		};
-
-		function voteAgainst(h) {
-			console.log(h,typeof(h));
-			Voting.voteAgainst(h);
-		};
-
-        var filter = web3.eth.filter('latest');
-        filter.watch(function(error, result) {
-          var block = web3.eth.getBlock(result, true);
-          console.log('block #' + block.number);
-          console.dir(block.transactions);
-        });
-
-        //.call only for get methods
-        var nbVotes = 0;
-        Voting.getNbVoteId.call(function(error, result){
-            if(error)
-              console.log(error);
-            else {
-              nbVotes = result.c[0];
-              console.log(nbVotes);
-              for(var i = 0; i < nbVotes; i++){
-                Voting.getVote(i, function(err, res) {
-                  if(err)
-                    console.log(err);
-                  else {
-					console.log(res);
-					$("#Votes").append("<tr><td>" + res[0] + "</td><td>" + res[1].c[0] + "</td><td>" + res[2].c[0] + "</td><td><button type=\"button\" onclick=\"voteFor("+ i +")\">Click Me!</button></td><td><button type=\"button\" onclick=\"voteAgainst("+ i +")\">Click Me!</button></td></tr>");
-				  }
-                });
-              }
-            }
-        });
-
-        $("#button").click(function() {
-            Voting.createVote($("#question").val(), function(err, res) {
-              if(err)
-                console.log(err);
-              else
-                console.log(res);
-            })
-        });
-    </script>
+    <script src="./js/contractParams.js"></script>
+    <script src="./js/main.js"></script>
 
 </body>
 </html>

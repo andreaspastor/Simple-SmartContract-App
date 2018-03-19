@@ -1,23 +1,14 @@
 {
-  "name": "Simple-SmartContract-App",
+  "name": "smart_contract",
   "version": "1.0.0",
-  "description": "",
+  "description": "Ethereum smart contracts app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/andreaspastor/Simple-SmartContract-App.git"
-  },
-  "keywords": [],
-  "author": "",
+  "author": "Mathis Guillet/Andreas Pastor",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/andreaspastor/Simple-SmartContract-App/issues"
-  },
-  "homepage": "https://github.com/andreaspastor/Simple-SmartContract-App#readme",
   "dependencies": {
-    "web3": "github:ethereum/web3.js"
+    "web3": "^0.20.6"
   }
 }
