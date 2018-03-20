@@ -2,7 +2,7 @@ pragma solidity ^0.4.18;
 
 contract Voting {
 
-  event VoteAdded(string question, bytes32 choice);
+  event VoteAdded(string question, bytes32 choice, address account);
 
   mapping (bytes32 => uint8) public votesReceived;
   mapping (address => bool) public hasVoted;
@@ -24,10 +24,9 @@ contract Voting {
 
   function voteForChoice(bytes32 choice) public {
     require(validChoice(choice));
-    require(!hasVoted[msg.sender]);
     votesReceived[choice] += 1;
     hasVoted[msg.sender] = true;
-    VoteAdded(questionName, choice);
+    VoteAdded(questionName, choice, msg.sender);
   }
 
   function validChoice(bytes32 choice) view public returns (bool) {

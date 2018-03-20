@@ -52,12 +52,12 @@ const watchEvents = () => {
      if (!error){
         var choice = web3.toUtf8(result.args.choice);
         alert(
-          "L'utilisateur du compte: " + activeAccount
+          "L'utilisateur du compte: " + result.args.account
           + "\n a voté pour le choix: " + choice
           + "\n à la question : " + result.args.question
         );
-
-        $('#' + choice).text(Number($(this).text())+1);
+        var prev = Number($('#' + choice).html());
+        $('#' + choice).html((prev+1).toString());
      }
   });
 }
@@ -118,6 +118,7 @@ $(document).ready(() => {
 
     $('select').on('change', function() {
       activeAccount = web3.eth.accounts[this.value];
+      web3.eth.defaultAccount = activeAccount;
     });
 
 });
